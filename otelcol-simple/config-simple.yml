@@ -1,0 +1,27 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+  simplemetricreceiver:
+    interval: 5s
+  
+
+processors:
+  batch:
+
+exporters:
+  debug:
+    verbosity: detailed
+  prometheus:
+    endpoint: 0.0.0.0:9100
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp, simplemetricreceiver]
+      processors: [batch]
+      exporters: [debug, prometheus]
+  telemetry:
+    logs:
+      level: debug
